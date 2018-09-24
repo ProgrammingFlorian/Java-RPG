@@ -3,6 +3,7 @@ package florian.tbc.world;
 import java.awt.Graphics;
 
 import florian.tbc.assets.Assets;
+import florian.tbc.display.Camera;
 import florian.tbc.game.Handler;
 import florian.tbc.utils.Utilities;
 
@@ -28,15 +29,8 @@ public class World {
 	private void init() {
 		sprites = new Assets();
 		handler.setSprites(sprites);
-		
-		/*tiles = new int[][] {
-			{2, 3, 4, 5, 5, 17},
-			{8, 9, 10, 5, 5, 17},
-			{14, 15, 16, 5, 5, 17},
-			{1, 2, 3, 4, 5, 6},
-			{7, 8, 9, 10, 11, 12},
-			{13, 14, 15, 16, 17, 18}
-		};*/
+		handler.setCamera(new Camera(handler, 10, 10));
+		handler.getCamera().move(200, 100);
 		loadWorld("/worlds/start");
 	}
 	
@@ -65,9 +59,14 @@ public class World {
 	}
 	
 	public void render(Graphics g) {
-		for(int y = 0; y < height; y++) {
-			for(int x = 0; x < width; x++) {
-				g.drawImage(sprites.getSprite(tiles[y][x]), x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE, null);
+		int xStart = (int) Math.max(0, handler.getCamera().getxOffset() / TILE_SIZE);
+		int xEnd = (int) Math.min(width, (handler.getCamera().getxOffset() + handler.getDisplay().getWidth()) / TILE_SIZE + 1);
+		int yStart = (int) Math.max(0, handler.getCamera().getyOffset() / TILE_SIZE);
+		int yEnd = (int) Math.min(height, (handler.getCamera().getyOffset() + handler.getDisplay().getHeight()) / TILE_SIZE + 1);
+		
+		for(int y = yStart;y < yEnd;y++){
+			for(int x = xStart;x < xEnd;x++){
+				g.drawImage(sprites.getSprite(tiles[y][x]), (int) (x * TILE_SIZE - handler.getCamera().getxOffset()),(int) (y * TILE_SIZE - handler.getCamera().getyOffset()), TILE_SIZE, TILE_SIZE, null);
 			}
 		}
 	}

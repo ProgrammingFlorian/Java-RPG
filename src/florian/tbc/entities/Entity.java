@@ -4,8 +4,11 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
 import florian.tbc.battle.Attack;
+import florian.tbc.game.Handler;
 
 public abstract class Entity {
+	
+	protected Handler handler;
 	
 	protected int health, maxHealth;
 	protected int mana, maxMana;
@@ -15,7 +18,8 @@ public abstract class Entity {
 	
 	protected Attack[] attacks;
 	
-	public Entity(int health, int mana, int posX, int posY, int width, int height, BufferedImage image) {
+	public Entity(int health, int mana, int posX, int posY, int width, int height, BufferedImage image, Handler handler) {
+		this.handler = handler;
 		this.maxHealth = health;
 		this.health = health;
 		this.maxMana = mana;
@@ -30,7 +34,7 @@ public abstract class Entity {
 	public abstract void tick();
 	
 	public void render(Graphics g) {
-		g.drawImage(image, posX, posY, width, height, null);
+		g.drawImage(image, (int) (this.posX - handler.getCamera().getxOffset()), (int) (this.posY - handler.getCamera().getyOffset()), width, height, null);
 	}
 	
 	public int getX() {
@@ -47,6 +51,14 @@ public abstract class Entity {
 	
 	public int getMidY() {
 		return this.posY + (this.height / 2);
+	}
+	
+	public int getWidth() {
+		return this.width;
+	}
+	
+	public int getHeight() {
+		return this.height;
 	}
 	
 	public Attack getAttack(int ID) {

@@ -15,7 +15,7 @@ public class Pow extends Attack {
 	}
 	
 	public void draw(Graphics g, int x1, int x2, int y1, int y2, float percentage) {
-		g.drawOval((int) (x1 + (x2 - x1) * percentage), (int) (y1 + (y2 - y1) * percentage), 10, 10);
+		g.drawOval((int) ((x1 + (x2 - x1) * percentage)- handler.getCamera().getxOffset()), (int) ((y1 + (y2 - y1) * percentage) - handler.getCamera().getyOffset()), 10, 10);
 	}
 	
 }

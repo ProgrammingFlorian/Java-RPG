@@ -23,7 +23,6 @@ public class Assets {
 		
 		for(int y = 0; y < yCount; y++) {
 			for(int x = 0; x < xCount; x++) {
-				System.out.println("x: " + x + " y: " + y + " ID: " + (y * xCount + x));
 				sprites[y * xCount + x] = spritesheet.getSubimage(x * 17, y * 17, 16, 16);
 			}
 		}

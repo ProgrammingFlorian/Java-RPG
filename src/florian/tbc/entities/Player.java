@@ -9,13 +9,10 @@ import florian.tbc.game.Handler;
 
 public class Player extends Entity {
 
-	private Handler handler;
-	
 	private int speed;
 	
 	public Player(int health, int mana, int posX, int posY, int speed, int width, int height, BufferedImage image, Handler handler) {
-		super(health, mana, posX, posY, width, height, image);
-		this.handler = handler;
+		super(health, mana, posX, posY, width, height, image, handler);
 		this.speed = speed;
 		
 		this.attacks = new Attack[3];
@@ -36,6 +33,7 @@ public class Player extends Entity {
 		}else if(handler.getKeys().left) {
 			this.posX -= speed;
 		}
+		handler.getCamera().centerOnEntity(this);
 	}
 	
 }

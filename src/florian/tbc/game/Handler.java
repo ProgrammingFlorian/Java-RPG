@@ -3,6 +3,7 @@ package florian.tbc.game;
 import javax.swing.JFrame;
 
 import florian.tbc.assets.Assets;
+import florian.tbc.display.Camera;
 import florian.tbc.display.Display;
 import florian.tbc.manager.KeyManager;
 import florian.tbc.world.World;
@@ -14,6 +15,7 @@ public class Handler {
 	private Display display;
 	private KeyManager keyManager;
 	private Assets sprites;
+	private Camera camera;
 	
 	public World getWorld() {
 		return world;
@@ -58,4 +60,14 @@ public class Handler {
 	public void setSprites(Assets sprites) {
 		this.sprites = sprites;
 	}
+
+	public Camera getCamera() {
+		return camera;
+	}
+
+	public void setCamera(Camera camera) {
+		this.camera = camera;
+	}
+	
+	
 }

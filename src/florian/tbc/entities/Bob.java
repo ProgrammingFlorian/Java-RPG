@@ -2,10 +2,12 @@ package florian.tbc.entities;
 
 import java.awt.image.BufferedImage;
 
+import florian.tbc.game.Handler;
+
 public class Bob extends Entity {
 
-	public Bob(int health, int mana, int posX, int poY, int width, int height, BufferedImage image) {
-		super(health, mana, posX, poY, width, height, image);
+	public Bob(int health, int mana, int posX, int poY, int width, int height, BufferedImage image, Handler handler) {
+		super(health, mana, posX, poY, width, height, image, handler);
 	}
 
 	@Override
