@@ -5,6 +5,9 @@ import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
@@ -32,6 +35,23 @@ public class Utilities {
 			y = (yPos - fm.getHeight() / 2) + fm.getAscent();
 		}
 		g.drawString(text, x, y);
+	}
+	
+	public static String loadFileAsString(String path) {
+		try {
+			StringBuilder sb = new StringBuilder();
+			FileReader fr = new FileReader(new File(Utilities.class.getResource(path).getFile()));
+			BufferedReader br = new BufferedReader(fr);
+			String line;
+			while((line = br.readLine()) != null) {
+				sb.append(line + " ");
+			}
+			br.close();
+			return sb.toString();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 	
 }

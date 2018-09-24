@@ -23,10 +23,11 @@ public class OpenWorldState extends State {
 	public OpenWorldState(Handler handler) {
 		this.handler = handler;
 		
-		player = new Player(100, 100, 0, 0, 3, 64, 64, Utilities.loadImage("/textures/player.png"), handler);
-		entities.add(new Bob(100, 100, 200, 100, 64, 64, Utilities.loadImage("/textures/bob.png")));
 		world = new World(6, 6, handler);
 		handler.setWorld(world);
+		
+		player = new Player(100, 100, handler.getWorld().getSpawnX(), handler.getWorld().getSpawnY(), 3, 64, 64, Utilities.loadImage("/textures/player.png"), handler);
+		entities.add(new Bob(100, 100, 200, 100, 64, 64, Utilities.loadImage("/textures/bob.png")));
 	}
 	
 	public void tick() {

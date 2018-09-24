@@ -9,22 +9,21 @@ public class Assets {
 	private BufferedImage spritesheet, uiSpritesheet;
 	private BufferedImage[] sprites, uiSprites;
 	
-	private int xCount, yCount;
-	
-	public Assets(int xCount, int yCount) {
-		this.xCount = xCount;
-		this.yCount = yCount;
+	public Assets() {
 		init();
 	}
 	
 	private void init() {
+		int xCount = 57;
+		int yCount = 31;
 		spritesheet = Utilities.loadImage("/textures/spritesheet.png");
 		uiSpritesheet = Utilities.loadImage("/textures/uiSpritesheet.png");
 		sprites = new BufferedImage[xCount * yCount];
 		uiSprites = new BufferedImage[2];
 		
-		for(int y = 0; y < xCount; y++) {
-			for(int x = 0; x < yCount; x++) {
+		for(int y = 0; y < yCount; y++) {
+			for(int x = 0; x < xCount; x++) {
+				System.out.println("x: " + x + " y: " + y + " ID: " + (y * xCount + x));
 				sprites[y * xCount + x] = spritesheet.getSubimage(x * 17, y * 17, 16, 16);
 			}
 		}
