@@ -4,7 +4,6 @@ import java.awt.Graphics;
 import java.util.ArrayList;
 import java.util.List;
 
-import florian.tbc.battle.Battle;
 import florian.tbc.entities.Bob;
 import florian.tbc.entities.Entity;
 import florian.tbc.entities.Player;
@@ -31,12 +30,17 @@ public class OpenWorldState extends State {
 	}
 	
 	public void tick() {
-		if(handler.getKeys().p) {
-			State.setState(new BattleState(new Battle(player, entities.get(0), handler), handler));
-		}
+		/*if(handler.getKeys().p) {
+			if(entities.size() > 0)
+				State.setState(new BattleState(new Battle(player, entities.get(0), handler), handler));
+		}*/
 		world.tick();
-		for(Entity e : entities) {
-			e.tick();
+		for(int i = 0; i < entities.size(); i++) {
+			if(!entities.get(i).isAlive()){
+				entities.remove(i);
+			}else{
+				entities.get(i).tick();
+			}
 		}
 		player.tick();
 	}
@@ -47,6 +51,10 @@ public class OpenWorldState extends State {
 			e.render(g);
 		}
 		player.render(g);
+	}
+	
+	public List<Entity> getEntities(){
+		return this.entities;
 	}
 	
 }

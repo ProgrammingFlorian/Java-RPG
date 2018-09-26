@@ -2,6 +2,7 @@ package florian.tbc.battle;
 
 import java.awt.Graphics;
 
+import florian.tbc.entities.Entity;
 import florian.tbc.game.Handler;
 
 public abstract class Attack {
@@ -10,9 +11,11 @@ public abstract class Attack {
 	protected int manaCost;
 	protected String name;
 	protected boolean active = false;
-	protected int delta;
 	protected float length;
 	protected Handler handler;
+	
+	protected float percentage = 0;
+	protected int delta;
 	
 	public Attack(Handler handler) {
 		this.handler = handler;
@@ -35,18 +38,18 @@ public abstract class Attack {
 		this.active = true;
 	}
 	
-	public void render(Graphics g, int x1, int x2, int y1, int y2) {
+	public void tick(Entity enemy){
 		if(this.active) {
-			delta++;
-			float percentage = 1f / ((float) length * handler.getGame().getFPS() / (float) delta);
-			draw(g, x1, x2, y1, y2, percentage);
-			if(percentage >= 1) {
+			this.delta++;
+			this.percentage = 1f / ((float) this.length * handler.getGame().getFPS() / (float) this.delta);
+			if(this.percentage >= 1) {
 				this.active = false;
-				delta = 0;
+				this.delta = 0;
+				enemy.attack(damage);
 			}
 		}
 	}
 	
-	public abstract void draw(Graphics g, int x1, int x2, int y1, int y2, float percentage);
+	public abstract void render(Graphics g, int x1, int x2, int y1, int y2);
 	
 }

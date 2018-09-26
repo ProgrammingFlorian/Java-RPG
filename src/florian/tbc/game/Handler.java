@@ -6,6 +6,7 @@ import florian.tbc.assets.Assets;
 import florian.tbc.display.Camera;
 import florian.tbc.display.Display;
 import florian.tbc.manager.KeyManager;
+import florian.tbc.states.OpenWorldState;
 import florian.tbc.world.World;
 
 public class Handler {
@@ -16,6 +17,7 @@ public class Handler {
 	private KeyManager keyManager;
 	private Assets sprites;
 	private Camera camera;
+	private OpenWorldState openWorldState;
 	
 	public World getWorld() {
 		return world;
@@ -68,6 +70,13 @@ public class Handler {
 	public void setCamera(Camera camera) {
 		this.camera = camera;
 	}
-	
+
+	public OpenWorldState getOpenWorldState() {
+		return openWorldState;
+	}
+
+	public void setOpenWorldState(OpenWorldState openWorldState) {
+		this.openWorldState = openWorldState;
+	}
 	
 }

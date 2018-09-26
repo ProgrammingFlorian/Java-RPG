@@ -3,9 +3,12 @@ package florian.tbc.entities;
 import java.awt.image.BufferedImage;
 
 import florian.tbc.battle.Attack;
+import florian.tbc.battle.Battle;
 import florian.tbc.battle.Claw;
 import florian.tbc.battle.Pow;
 import florian.tbc.game.Handler;
+import florian.tbc.states.BattleState;
+import florian.tbc.states.State;
 
 public class Player extends Entity {
 
@@ -34,6 +37,11 @@ public class Player extends Entity {
 			this.posX -= speed;
 		}
 		handler.getCamera().centerOnEntity(this);
+		for(Entity e : handler.getOpenWorldState().getEntities()){
+			if(Math.abs(e.getX() - this.posX) < 50 && Math.abs(e.getY() - this.posY) < 50){
+				State.setState(new BattleState(new Battle(this, e, handler), handler));
+			}
+		}
 	}
 	
 }

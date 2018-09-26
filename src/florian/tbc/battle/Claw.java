@@ -13,7 +13,7 @@ public class Claw extends Attack {
 		this.name = "Claw";
 	}
 
-	public void draw(Graphics g, int x1, int x2, int y1, int y2, float percentage) {
+	public void render(Graphics g, int x1, int x2, int y1, int y2) {
 		
 	}
 

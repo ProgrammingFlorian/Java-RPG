@@ -11,8 +11,6 @@ import florian.tbc.states.State;
 public class Game implements Runnable {
 
 	private Handler handler;
-	private OpenWorldState gamestate;
-	//private MenuState menustate;
 	
 	private Thread thread;
 	
@@ -34,9 +32,8 @@ public class Game implements Runnable {
 		handler.setKeys(new KeyManager());
 		handler.getFrame().addKeyListener(handler.getKeys());
 		
-		gamestate = new OpenWorldState(handler);
-		//menustate = new MenuState();
-		State.setState(gamestate);
+		handler.setOpenWorldState(new OpenWorldState(handler));
+		State.setState(handler.getOpenWorldState());
 	}
 	
 	public void run(){

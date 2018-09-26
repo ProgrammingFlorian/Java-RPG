@@ -1,5 +1,6 @@
 package florian.tbc.entities;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
@@ -10,6 +11,7 @@ public abstract class Entity {
 	
 	protected Handler handler;
 	
+	protected boolean alive = true;
 	protected int health, maxHealth;
 	protected int mana, maxMana;
 	protected int posX, posY;
@@ -35,6 +37,10 @@ public abstract class Entity {
 	
 	public void render(Graphics g) {
 		g.drawImage(image, (int) (this.posX - handler.getCamera().getxOffset()), (int) (this.posY - handler.getCamera().getyOffset()), width, height, null);
+		g.setColor(Color.GRAY);
+		g.fillRect((int) (this.posX - handler.getCamera().getxOffset()), (int) (this.posY - handler.getCamera().getyOffset()), width, 10);
+		g.setColor(Color.RED);
+		g.fillRect((int) (this.posX - handler.getCamera().getxOffset()), (int) (this.posY - handler.getCamera().getyOffset()), (int) (width * (1f / ((float) maxHealth / (float) health))), 10);
 	}
 	
 	public int getX() {
@@ -70,6 +76,25 @@ public abstract class Entity {
 			return attacks.length;
 		else
 			return 0;
+	}
+	
+	public int getHealth(){
+		return health;
+	}
+	
+	public boolean isAlive(){
+		return alive;
+	}
+	
+	public void attack(int damage){
+		this.health -= damage;
+		if(this.health <= 0){
+			this.die();
+		}
+	}
+	
+	private void die(){
+		this.alive = false;
 	}
 
 }
