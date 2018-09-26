@@ -9,6 +9,9 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.imageio.ImageIO;
 
@@ -44,13 +47,40 @@ public class Utilities {
 			BufferedReader br = new BufferedReader(fr);
 			String line;
 			while((line = br.readLine()) != null) {
-				sb.append(line + " ");
+				sb.append(line + ",");
 			}
 			br.close();
 			return sb.toString();
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
+		}
+	}
+	
+	public static String[] loadFileAsArray(String path) {
+		try {
+			List<String> output = new ArrayList<String>();
+			FileReader fr = new FileReader(new File(Utilities.class.getResource(path).getFile()));
+			BufferedReader br = new BufferedReader(fr);
+			String line;
+			while((line = br.readLine()) != null) {
+				output.add(line);
+			}
+			br.close();
+			return output.toArray(new String[0]);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	
+	public static void saveToFile(String path, String content) {
+		try (PrintWriter out = new PrintWriter(path)) {
+		    out.println(content);
+		    out.close();
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 	
