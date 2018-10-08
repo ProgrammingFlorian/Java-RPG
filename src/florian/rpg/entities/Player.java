@@ -1,5 +1,6 @@
 package florian.rpg.entities;
 
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
 import florian.rpg.battle.Attack;
@@ -17,6 +18,7 @@ public class Player extends Entity {
 	public Player(int health, int mana, int posX, int posY, int speed, int width, int height, BufferedImage image, Handler handler) {
 		super(health, mana, posX, posY, width, height, image, handler);
 		this.speed = speed;
+		this.bounds = new Rectangle(12, 20, 39, 39);
 		
 		this.attacks = new Attack[3];
 		this.attacks[0] = new Claw(handler);
@@ -26,19 +28,26 @@ public class Player extends Entity {
 
 	@Override
 	public void tick() {
+		super.move();
 		if(handler.getKeys().up) {
-			this.posY -= speed;
+			moveY = -speed;
 		}else if(handler.getKeys().down) {
-			this.posY += speed;
+			moveY = speed;
+		}else {
+			moveY = 0;
 		}
 		if(handler.getKeys().right) {
-			this.posX += speed;
+			this.moveX = speed;
 		}else if(handler.getKeys().left) {
-			this.posX -= speed;
+			this.moveX = -speed;
+		}else {
+			this.moveX = 0;
 		}
 		handler.getCamera().centerOnEntity(this);
 		for(Entity e : handler.getOpenWorldState().getEntities()){
-			if(Math.abs(e.getX() - this.posX) < 50 && Math.abs(e.getY() - this.posY) < 50){
+			if(Math.abs(e.getX() - this.posX) < 120 && Math.abs(e.getY() - this.posY) < 120){
+				this.setFighting(true);
+				e.setFighting(true);
 				State.setState(new BattleState(new Battle(this, e, handler), handler));
 			}
 		}

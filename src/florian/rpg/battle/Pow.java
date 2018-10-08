@@ -12,7 +12,7 @@ public class Pow extends Attack {
 		this.manaCost = 50;
 		this.name = "Pow";
 		this.length = 0.5f;
-		this.icon = handler.getSprites().getUiSprite(2);
+		this.icon = handler.getSprites().getAttackIcon(0);
 	}
 	
 	public void render(Graphics g, int x1, int x2, int y1, int y2) {

@@ -54,11 +54,9 @@ public class Battle {
 	}
 	
 	private void EndBattle(){
-		if(!enemy.isAlive()){
-			State.setState(handler.getOpenWorldState());
-		}else{
-			
-		}
+		player.setFighting(false);
+		enemy.setFighting(false);
+		State.setState(handler.getOpenWorldState());
 	}
 
 }

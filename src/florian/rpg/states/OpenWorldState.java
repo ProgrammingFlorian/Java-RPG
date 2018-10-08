@@ -13,6 +13,7 @@ import florian.rpg.world.World;
 
 public class OpenWorldState extends State {
 	
+	@SuppressWarnings("unused")
 	private Handler handler;
 	private World world;
 	
@@ -26,14 +27,10 @@ public class OpenWorldState extends State {
 		handler.setWorld(world);
 		
 		player = new Player(100, 100, handler.getWorld().getSpawnX() * World.TILE_SIZE, handler.getWorld().getSpawnY() * World.TILE_SIZE, 3, 64, 64, Utilities.loadImage("/textures/player.png"), handler);
-		entities.add(new Bob(100, 100, 15 * World.TILE_SIZE, 15 * World.TILE_SIZE, 64, 64, Utilities.loadImage("/textures/bob.png"), handler));
+		entities.add(new Bob(100, 100, 21 * World.TILE_SIZE, 15 * World.TILE_SIZE, 64, 64, Utilities.loadImage("/textures/bob.png"), handler));
 	}
 	
 	public void tick() {
-		/*if(handler.getKeys().p) {
-			if(entities.size() > 0)
-				State.setState(new BattleState(new Battle(player, entities.get(0), handler), handler));
-		}*/
 		world.tick();
 		for(int i = 0; i < entities.size(); i++) {
 			if(!entities.get(i).isAlive()){

@@ -3,6 +3,7 @@ package florian.rpg.world;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.util.Arrays;
+import java.util.List;
 
 import florian.rpg.assets.Assets;
 import florian.rpg.display.Camera;
@@ -90,8 +91,13 @@ public class World {
 		}
 	}
 	
-	private boolean isSolid(int ID) {
-		int[] solid = {697, 698, 699};
-		return Arrays.asList(solid).contains(ID);
+	public boolean isSolid(int x, int y) {
+		List<Integer> solids = Arrays.asList(698, 757, 756, 700, 701, 868, 869, 871, 758);
+		for(int i = 0; i < layers; i++) {
+			if(solids.contains(tiles[i][y][x])) {
+				return true;
+			}
+		}
+		return false;
 	}
 }
