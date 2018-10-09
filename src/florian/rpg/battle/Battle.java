@@ -48,7 +48,7 @@ public class Battle {
 	
 	private void drawAttackSelection(Graphics g) {
 		for(int i = 0; i < player.attackCount(); i++) {
-			g.drawImage(handler.getSprites().getUiSprite(0), 100 + i * 100, (handler.getDisplay().getHeight()) - 80, 75, 75, null);
+			g.drawImage((player.getAttack(i).canActivate()) ? handler.getSprites().getUiSprite(1) : handler.getSprites().getUiSprite(0), 100 + i * 100, (handler.getDisplay().getHeight()) - 80, 75, 75, null);
 			g.drawImage(player.getAttack(i).getIcon(), 110 + i * 100, (handler.getDisplay().getHeight()) - 70, 55, 55, null); 
 		}
 	}

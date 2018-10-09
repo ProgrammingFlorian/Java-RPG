@@ -17,7 +17,7 @@ public class OpenWorldState extends State {
 	private Handler handler;
 	private World world;
 	
-	private Entity player;
+	private Player player;
 	private List<Entity> entities = new ArrayList<Entity>();
 	
 	public OpenWorldState(Handler handler) {
@@ -26,8 +26,9 @@ public class OpenWorldState extends State {
 		world = new World(6, 6, handler);
 		handler.setWorld(world);
 		
-		player = new Player(100, 100, handler.getWorld().getSpawnX() * World.TILE_SIZE, handler.getWorld().getSpawnY() * World.TILE_SIZE, 3, 64, 64, Utilities.loadImage("/textures/player.png"), handler);
+		player = new Player(100, 100, handler.getWorld().getSpawnX() * World.TILE_SIZE, handler.getWorld().getSpawnY() * World.TILE_SIZE, 4, 64, 64, handler);
 		entities.add(new Bob(100, 100, 21 * World.TILE_SIZE, 15 * World.TILE_SIZE, 64, 64, Utilities.loadImage("/textures/bob.png"), handler));
+		handler.setPlayer(player);
 	}
 	
 	public void tick() {

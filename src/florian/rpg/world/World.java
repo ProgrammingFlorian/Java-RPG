@@ -50,8 +50,6 @@ public class World {
 				this.spawnX = Integer.parseInt(data[0]);
 				this.spawnY = Integer.parseInt(data[1]);
 			}else {
-				System.out.println("Layer: " + (y / this.height));
-				System.out.println("y: " + (y - (((y - 2) / this.height) * this.height) - 2));
 				for(int x = 0; x < data.length; x++) {
 					tiles[((y - 2) / this.height)][y - (((y - 2) / this.height) * this.height) - 2][x] = Integer.parseInt(data[x]);
 				}

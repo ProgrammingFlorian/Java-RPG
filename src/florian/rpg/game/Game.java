@@ -17,7 +17,7 @@ public class Game implements Runnable {
 	private boolean running = false;
 	private int width, height;
 	private String title;
-	private int fps;
+	private int fps = 60;
 	
 	public Game(int width, int height, String title){
 		this.width = width;
@@ -41,7 +41,6 @@ public class Game implements Runnable {
 		
 		start();
 
-		fps = 60;
 		double timePerTick = 1000000000 / fps;
 		double delta = 0;
 		long now;

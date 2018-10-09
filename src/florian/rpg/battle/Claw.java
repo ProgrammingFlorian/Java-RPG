@@ -11,6 +11,7 @@ public class Claw extends Attack {
 		this.damage = 20;
 		this.manaCost = 10;
 		this.name = "Claw";
+		this.cooldown = 1 * handler.getGame().getFPS();
 		this.icon = handler.getSprites().getAttackIcon(1);
 	}
 

@@ -5,6 +5,7 @@ import javax.swing.JFrame;
 import florian.rpg.assets.Assets;
 import florian.rpg.display.Camera;
 import florian.rpg.display.Display;
+import florian.rpg.entities.Player;
 import florian.rpg.manager.KeyManager;
 import florian.rpg.states.OpenWorldState;
 import florian.rpg.world.World;
@@ -18,6 +19,7 @@ public class Handler {
 	private Assets sprites;
 	private Camera camera;
 	private OpenWorldState openWorldState;
+	private Player player;
 	
 	public World getWorld() {
 		return world;
@@ -77,6 +79,14 @@ public class Handler {
 
 	public void setOpenWorldState(OpenWorldState openWorldState) {
 		this.openWorldState = openWorldState;
+	}
+
+	public Player getPlayer() {
+		return player;
+	}
+
+	public void setPlayer(Player player) {
+		this.player = player;
 	}
 	
 }

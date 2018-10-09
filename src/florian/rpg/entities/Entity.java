@@ -43,6 +43,9 @@ public abstract class Entity {
 	public abstract void tick();
 	
 	public void render(Graphics g) {
+		if(image == null)
+			return;
+		
 		g.drawImage(image, (int) (this.posX - handler.getCamera().getxOffset()), (int) (this.posY - handler.getCamera().getyOffset()), width, height, null);
 		if(isFighting) {
 			g.setColor(Color.GRAY);

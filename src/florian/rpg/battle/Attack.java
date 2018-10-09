@@ -12,7 +12,8 @@ public abstract class Attack {
 	protected int manaCost;
 	protected String name;
 	protected boolean active = false;
-	protected float length;
+	protected float length; 
+	protected int cooldown = 0, remainingCooldown = 0;
 	protected Handler handler;
 	
 	protected float percentage = 0;
@@ -41,20 +42,34 @@ public abstract class Attack {
 	}
 	
 	public void activate() {
+		if(!handler.getPlayer().costMana(manaCost))
+			return;
 		System.out.println("Activated " + this.name);
 		this.active = true;
 	}
 	
 	public void tick(Entity enemy){
-		if(this.active) {
+		if(remainingCooldown > 0){
+			remainingCooldown -= 1;
+			this.active = false;
+		}else if(this.active) {
 			this.delta++;
 			this.percentage = 1f / ((float) this.length * handler.getGame().getFPS() / (float) this.delta);
 			if(this.percentage >= 1) {
-				this.active = false;
-				this.delta = 0;
 				enemy.attack(damage);
+				deactivate();
 			}
 		}
+	}
+	
+	public void deactivate(){
+		active = false;
+		delta = 0;
+		remainingCooldown = cooldown; 
+	}
+	
+	public boolean canActivate(){
+		return remainingCooldown <= 0;
 	}
 	
 	public abstract void render(Graphics g, int x1, int x2, int y1, int y2);

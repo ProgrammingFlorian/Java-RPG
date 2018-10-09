@@ -12,6 +12,7 @@ public class Pow extends Attack {
 		this.manaCost = 50;
 		this.name = "Pow";
 		this.length = 0.5f;
+		this.cooldown = 2 * handler.getGame().getFPS();
 		this.icon = handler.getSprites().getAttackIcon(0);
 	}
 	
