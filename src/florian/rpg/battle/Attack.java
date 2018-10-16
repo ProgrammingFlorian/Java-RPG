@@ -4,6 +4,7 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
 import florian.rpg.entities.Entity;
+import florian.rpg.entities.Player;
 import florian.rpg.game.Handler;
 
 public abstract class Attack {
@@ -14,6 +15,7 @@ public abstract class Attack {
 	protected boolean active = false;
 	protected float length; 
 	protected int cooldown = 0, remainingCooldown = 0;
+	protected boolean isShield;
 	protected Handler handler;
 	
 	protected float percentage = 0;
@@ -48,15 +50,20 @@ public abstract class Attack {
 		this.active = true;
 	}
 	
-	public void tick(Entity enemy){
+	public void tick(Player player, Entity enemy){
 		if(remainingCooldown > 0){
 			remainingCooldown -= 1;
 			this.active = false;
 		}else if(this.active) {
+			if(isShield)
+				player.setShield(damage);
 			this.delta++;
 			this.percentage = 1f / ((float) this.length * handler.getGame().getFPS() / (float) this.delta);
 			if(this.percentage >= 1) {
-				enemy.attack(damage);
+				if(isShield)
+					player.setShield(0);
+				else
+					enemy.attack(damage);
 				deactivate();
 			}
 		}

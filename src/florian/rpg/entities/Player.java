@@ -24,6 +24,7 @@ public class Player extends Entity {
 	
 	private int manaPerSecond = 10;
 	private int delta;
+	private int shield = 0;
 	
 	public Player(int health, int mana, int posX, int posY, int speed, int width, int height, Handler handler) {
 		super(health, mana, posX, posY, width, height, null, handler);
@@ -48,11 +49,13 @@ public class Player extends Entity {
 
 	@Override
 	public void tick() {
-		super.move();
+		if(!isFighting){
+			updateMovement();
+			super.move();
+			checkForFight();
+			handler.getCamera().centerOnEntity(this);
+		}
 		delta++;
-		updateMovement();
-		handler.getCamera().centerOnEntity(this);
-		checkForFight();
 		if(delta % (handler.getGame().getFPS() / manaPerSecond) == 0){
 			mana += manaPerSecond;
 			if(mana > maxMana)
@@ -147,6 +150,21 @@ public class Player extends Entity {
 			return true;
 		}else
 			return false;
+	}
+
+	public int getShield() {
+		return shield;
+	}
+
+	public void setShield(int shield) {
+		this.shield = shield;
+	}
+	
+	@Override
+	public void attack(int damage){
+		damage -= shield;
+		if(damage > 0)
+			super.attack(damage);
 	}
 	
 }

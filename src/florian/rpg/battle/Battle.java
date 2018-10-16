@@ -4,6 +4,7 @@ import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 
 import florian.rpg.entities.Entity;
+import florian.rpg.entities.Player;
 import florian.rpg.game.Handler;
 import florian.rpg.states.State;
 
@@ -11,10 +12,10 @@ public class Battle {
 	
 	private Handler handler;
 	
-	private Entity player;
+	private Player player;
 	private Entity enemy;
 	
-	public Battle(Entity player, Entity enemy, Handler handler) {
+	public Battle(Player player, Entity enemy, Handler handler) {
 		this.handler = handler;
 		this.player = player;
 		this.enemy = enemy;
@@ -23,6 +24,7 @@ public class Battle {
 	public void tick() {
 		if(!player.isAlive() || !enemy.isAlive()){
 			this.EndBattle();
+			return;
 		}
 		
 		if(handler.getKeys().keyJustPressed(KeyEvent.VK_1)){
@@ -33,8 +35,9 @@ public class Battle {
 			player.getAttack(2).activate();
 		}
 		
+		player.tick();
 		for(int a = 0; a < player.attackCount(); a++){
-			player.getAttack(a).tick(enemy);
+			player.getAttack(a).tick(player, enemy);
 		}
 	}
 	
