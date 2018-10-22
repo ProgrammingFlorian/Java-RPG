@@ -6,16 +6,12 @@ import florian.rpg.utils.Utilities;
 
 public class Assets {
 	
-	private BufferedImage spritesheet, uiSpritesheet, playerSpritesheet;
-	private BufferedImage[] sprites, uiSprites;
-	private BufferedImage[] attackIcons;
-	private BufferedImage[] playerUp, playerDown, playerLeft, playerRight;
+	private static BufferedImage spritesheet, uiSpritesheet, playerSpritesheet;
+	private static BufferedImage[] sprites, uiSprites;
+	private static BufferedImage[] attackIcons;
+	private static BufferedImage[] playerUp, playerDown, playerLeft, playerRight;
 	
-	public Assets() {
-		init();
-	}
-	
-	private void init() {
+	public static void init() {
 		int xCount = 57;
 		int yCount = 31;
 		spritesheet = Utilities.loadImage("/textures/spritesheet.png");
@@ -58,31 +54,31 @@ public class Assets {
 		attackIcons[2] = uiSpritesheet.getSubimage(338, 331, 34, 34);
 	}
 	
-	public BufferedImage getSprite(int ID) {
+	public static BufferedImage getSprite(int ID) {
 		return sprites[ID];
 	}
 	
-	public BufferedImage getUiSprite(int ID) {
+	public static BufferedImage getUiSprite(int ID) {
 		return uiSprites[ID];
 	}
 	
-	public BufferedImage getAttackIcon(int ID) {
+	public static BufferedImage getAttackIcon(int ID) {
 		return attackIcons[ID];
 	}
 
-	public BufferedImage[] getPlayerUp() {
+	public static BufferedImage[] getPlayerUp() {
 		return playerUp;
 	}
 
-	public BufferedImage[] getPlayerDown() {
+	public static BufferedImage[] getPlayerDown() {
 		return playerDown;
 	}
 
-	public BufferedImage[] getPlayerLeft() {
+	public static BufferedImage[] getPlayerLeft() {
 		return playerLeft;
 	}
 
-	public BufferedImage[] getPlayerRight() {
+	public static BufferedImage[] getPlayerRight() {
 		return playerRight;
 	}
 

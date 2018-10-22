@@ -6,6 +6,7 @@ import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
 import florian.rpg.assets.Animation;
+import florian.rpg.assets.Assets;
 import florian.rpg.battle.Attack;
 import florian.rpg.battle.Battle;
 import florian.rpg.battle.Claw;
@@ -40,10 +41,10 @@ public class Player extends Entity {
 		this.attacks[2] = new Claw(handler);
 		
 		int fps = handler.getGame().getFPS();
-		animUp = new Animation(handler.getSprites().getPlayerUp(), fps, 10);
-		animDown = new Animation(handler.getSprites().getPlayerDown(), fps, 10);
-		animLeft = new Animation(handler.getSprites().getPlayerLeft(), fps, 10);
-		animRight = new Animation(handler.getSprites().getPlayerRight(), fps, 10);
+		animUp = new Animation(Assets.getPlayerUp(), fps, 10);
+		animDown = new Animation(Assets.getPlayerDown(), fps, 10);
+		animLeft = new Animation(Assets.getPlayerLeft(), fps, 10);
+		animRight = new Animation(Assets.getPlayerRight(), fps, 10);
 		imgIdle = animDown.getFrame(0);
 	}
 

@@ -2,6 +2,7 @@ package florian.rpg.battle;
 
 import java.awt.Graphics;
 
+import florian.rpg.assets.Assets;
 import florian.rpg.game.Handler;
 
 public class Pow extends Attack {
@@ -13,7 +14,7 @@ public class Pow extends Attack {
 		this.name = "Pow";
 		this.length = 0.5f;
 		this.cooldown = 2 * handler.getGame().getFPS();
-		this.icon = handler.getSprites().getAttackIcon(0);
+		this.icon = Assets.getAttackIcon(0);
 	}
 	
 	public void render(Graphics g, int x1, int x2, int y1, int y2) {

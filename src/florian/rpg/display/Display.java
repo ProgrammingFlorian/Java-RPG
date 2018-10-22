@@ -35,15 +35,16 @@ public class Display {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setResizable(false);
 		frame.setLocationRelativeTo(null);
-		frame.setVisible(true);
 		
 		canvas = new Canvas();
 		canvas.setPreferredSize(new Dimension(frame.getWidth(), frame.getHeight()));
 		canvas.setMaximumSize(new Dimension(frame.getWidth(), frame.getHeight()));
 		canvas.setMinimumSize(new Dimension(frame.getWidth(), frame.getHeight()));
+		canvas.setFocusable(false);
 		
 		frame.add(canvas);
 		frame.pack();
+		frame.setVisible(true);
 	}
 	
 	public Canvas getCanvas(){

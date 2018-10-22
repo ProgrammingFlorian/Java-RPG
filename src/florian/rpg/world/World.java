@@ -16,7 +16,6 @@ public class World {
 	private int spawnX, spawnY;
 	public static int TILE_SIZE = 64;
 	
-	private Assets sprites;
 	private Handler handler;
 	
 	private int[][][] tiles;
@@ -30,8 +29,7 @@ public class World {
 	}
 	
 	private void init() {
-		sprites = new Assets();
-		handler.setSprites(sprites);
+		Assets.init();
 		handler.setCamera(new Camera(handler, 10, 10));
 		handler.getCamera().move(200, 100);
 		loadWorld("/worlds/layers");
@@ -66,7 +64,7 @@ public class World {
 	}
 	
 	public void tick() {
-		handler.getKeys().tick();
+		
 	}
 	
 	public void render(Graphics g) {
@@ -79,7 +77,7 @@ public class World {
 			for(int y = yStart; y < yEnd; y++){
 				for(int x = xStart; x < xEnd; x++){
 					if(tiles[l][y][x] != -1)
-						g.drawImage(sprites.getSprite(tiles[l][y][x]), (int) (x * TILE_SIZE - handler.getCamera().getxOffset()),(int) (y * TILE_SIZE - handler.getCamera().getyOffset()), TILE_SIZE, TILE_SIZE, null);
+						g.drawImage(Assets.getSprite(tiles[l][y][x]), (int) (x * TILE_SIZE - handler.getCamera().getxOffset()),(int) (y * TILE_SIZE - handler.getCamera().getyOffset()), TILE_SIZE, TILE_SIZE, null);
 					else if(l == 0) {
 						g.setColor(Color.BLACK);
 						g.fillRect((int) (x * TILE_SIZE - handler.getCamera().getxOffset()),(int) (y * TILE_SIZE - handler.getCamera().getyOffset()), TILE_SIZE, TILE_SIZE);

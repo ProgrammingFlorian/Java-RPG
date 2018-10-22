@@ -2,11 +2,12 @@ package florian.rpg.game;
 
 import javax.swing.JFrame;
 
-import florian.rpg.assets.Assets;
 import florian.rpg.display.Camera;
 import florian.rpg.display.Display;
 import florian.rpg.entities.Player;
+import florian.rpg.inventory.Inventory;
 import florian.rpg.manager.KeyManager;
+import florian.rpg.manager.MouseManager;
 import florian.rpg.states.OpenWorldState;
 import florian.rpg.world.World;
 
@@ -16,10 +17,11 @@ public class Handler {
 	private Game game;
 	private Display display;
 	private KeyManager keyManager;
-	private Assets sprites;
+	private MouseManager mouseManager;
 	private Camera camera;
 	private OpenWorldState openWorldState;
 	private Player player;
+	private Inventory inventory;
 	
 	public World getWorld() {
 		return world;
@@ -57,14 +59,6 @@ public class Handler {
 		this.keyManager = keyManager;
 	}
 
-	public Assets getSprites() {
-		return sprites;
-	}
-
-	public void setSprites(Assets sprites) {
-		this.sprites = sprites;
-	}
-
 	public Camera getCamera() {
 		return camera;
 	}
@@ -88,5 +82,23 @@ public class Handler {
 	public void setPlayer(Player player) {
 		this.player = player;
 	}
+
+	public Inventory getInventory() {
+		return inventory;
+	}
+
+	public void setInventory(Inventory inventory) {
+		this.inventory = inventory;
+	}
+
+	public MouseManager getMouse() {
+		return mouseManager;
+	}
+
+	public void setMouse(MouseManager mouseManager) {
+		this.mouseManager = mouseManager;
+	}
+	
+	
 	
 }
