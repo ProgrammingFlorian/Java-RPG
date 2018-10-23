@@ -62,7 +62,7 @@ public class OpenWorldState extends State {
 		}
 		player.render(g);
 		if(inventory.isActive())
-			inventory.render(g);
+			inventory.renderItems(g);
 	}
 	
 	public List<Entity> getEntities(){

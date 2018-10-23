@@ -11,7 +11,6 @@ import florian.rpg.game.Handler;
 public class Inventory {
 	
 	private Handler handler;
-	private SlotPlacement sp;
 	
 	private Item[] items;
 	private int[] amounts;
@@ -21,7 +20,6 @@ public class Inventory {
 	
 	public Inventory(Handler handler){
 		this.handler = handler;
-		this.sp = new SlotPlacement(handler);
 		
 		items = new Item[CONF_Inventory.SLOT_COUNT];
 		amounts = new int[CONF_Inventory.SLOT_COUNT];
@@ -42,12 +40,7 @@ public class Inventory {
 		drag();
 	}
 	
-	public void render(Graphics g) {
-		renderItems(g);
-		renderBar(g);
-	}
-	
-	private void renderItems(Graphics g) {
+	public void renderItems(Graphics g) {
 		//Darker Background
 		g.setColor(new Color(0, 0, 0, 0.3f));
 		g.fillRect(0, 0, handler.getDisplay().getWidth(), handler.getDisplay().getHeight());
@@ -63,8 +56,8 @@ public class Inventory {
 		g.drawString("Inventory", handler.getDisplay().getWidth() / 2 - g.getFontMetrics().stringWidth("Inventory") / 2, 95);
 		//Slots
 		for (int i = 0; i < CONF_Inventory.SLOT_COUNT; i++) {
-			int x = sp.getX(i);
-			int y = sp.getY(i);
+			int x = SlotPlacement.getX(i);
+			int y = SlotPlacement.getY(i);
 			g.drawImage(Assets.getUiSprite(0), x, y, CONF_Inventory.SLOT_SIZE, CONF_Inventory.SLOT_SIZE, null);
 			//Item in Slot
 			if(i != activeSlot && items[i] != null) {
@@ -78,8 +71,10 @@ public class Inventory {
 			g.drawImage(items[activeSlot].getIcon(), handler.getMouse().getMouseX() - ((CONF_Inventory.SLOT_SIZE - 20) / 2), handler.getMouse().getMouseY() - ((CONF_Inventory.SLOT_SIZE - 20) / 2), CONF_Inventory.SLOT_SIZE - 20, CONF_Inventory.SLOT_SIZE - 20, null);
 	}
 	
-	private void renderBar(Graphics g) {
-		
+	public void renderBar(Graphics g) {
+		for(int i = 0; i < CONF_Inventory.HOT_SLOT_COUNT; i++){
+			g.drawImage(Assets.getUiSprite(0), HotbarPlacement.getX(i), HotbarPlacement.getY(), CONF_Inventory.HOT_SLOT_SIZE, CONF_Inventory.HOT_SLOT_SIZE, null);
+		}
 	}
 	
 	public void activate() {
@@ -102,7 +97,7 @@ public class Inventory {
 		if(handler.getMouse().leftPressed()) { //Drag
 			if(!clickHold) {
 				clickHold = true;
-				int slot = sp.getSlot(handler.getMouse().getMouseX(), handler.getMouse().getMouseY());
+				int slot = florian.rpg.inventory.SlotPlacement.getSlot(handler.getMouse().getMouseX(), handler.getMouse().getMouseY());
 				if(slot != -1 && activeSlot == -1  && items[slot] != null) {
 					activeSlot = slot;
 				}
@@ -110,7 +105,7 @@ public class Inventory {
 		} else {
 			clickHold = false;
 			if(activeSlot != -1) { //Drop
-				int slot = sp.getSlot(handler.getMouse().getMouseX(), handler.getMouse().getMouseY());
+				int slot = SlotPlacement.getSlot(handler.getMouse().getMouseX(), handler.getMouse().getMouseY());
 				if(slot != -1 && slot != activeSlot) {
 					if(items[slot] == null) {
 						items[slot] = items[activeSlot];
@@ -118,7 +113,6 @@ public class Inventory {
 						items[activeSlot] = null;
 						amounts[activeSlot] = 0;
 					}else if(items[activeSlot].getID() == items[slot].getID()) {
-						System.out.println("same");
 						amounts[slot] += amounts[activeSlot];
 						items[activeSlot] = null;
 						amounts[activeSlot] = 0;

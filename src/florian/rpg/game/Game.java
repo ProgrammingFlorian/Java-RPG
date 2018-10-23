@@ -5,6 +5,7 @@ import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.image.BufferStrategy;
 
+import florian.rpg.config.CONF_Display;
 import florian.rpg.display.Display;
 import florian.rpg.manager.KeyManager;
 import florian.rpg.manager.MouseManager;
@@ -18,19 +19,16 @@ public class Game implements Runnable {
 	private Thread thread;
 	
 	private boolean running = false;
-	private int width, height;
 	private String title;
 	private int fps = 60;
 	
-	public Game(int width, int height, String title){
-		this.width = width;
-		this.height = height;
+	public Game(String title){
 		this.title = title;
 	}
 	
 	private void init() {
 		handler = new Handler();
-		handler.setDisplay(new Display(width, height, title));
+		handler.setDisplay(new Display(CONF_Display.width, CONF_Display.height, title));
 		handler.setGame(this);;
 		handler.setKeys(new KeyManager());
 		handler.getFrame().addKeyListener(handler.getKeys());
@@ -93,7 +91,7 @@ public class Game implements Runnable {
 		}
 		Graphics g = bs.getDrawGraphics();
 		
-		g.clearRect(0, 0, width, height);
+		g.clearRect(0, 0, CONF_Display.width, CONF_Display.height);
 		
         ((Graphics2D) g).setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		State.getState().render(g);

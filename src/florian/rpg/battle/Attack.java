@@ -79,6 +79,12 @@ public abstract class Attack {
 		return remainingCooldown <= 0;
 	}
 	
+	public float getCooldownPercentage(){
+		float c = ((float) remainingCooldown / (float) cooldown);
+		System.out.println(c);
+		return c;
+	}
+	
 	public abstract void render(Graphics g, int x1, int x2, int y1, int y2);
 	
 }

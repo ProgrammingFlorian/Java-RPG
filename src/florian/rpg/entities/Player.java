@@ -11,6 +11,7 @@ import florian.rpg.battle.Attack;
 import florian.rpg.battle.Battle;
 import florian.rpg.battle.Claw;
 import florian.rpg.battle.Pow;
+import florian.rpg.battle.Shield;
 import florian.rpg.game.Handler;
 import florian.rpg.states.BattleState;
 import florian.rpg.states.State;
@@ -38,7 +39,7 @@ public class Player extends Entity {
 		this.attacks = new Attack[3];
 		this.attacks[0] = new Claw(handler);
 		this.attacks[1] = new Pow(handler);
-		this.attacks[2] = new Claw(handler);
+		this.attacks[2] = new Shield(handler);
 		
 		int fps = handler.getGame().getFPS();
 		animUp = new Animation(Assets.getPlayerUp(), fps, 10);
