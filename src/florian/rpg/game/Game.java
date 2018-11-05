@@ -47,30 +47,33 @@ public class Game implements Runnable {
 		
 		start();
 
-		double timePerTick = 1000000000 / fps;
-		double delta = 0;
-		long now;
-		long lastTime = System.nanoTime();
-		long timer = 0;
+		double timePerTick = 1000 / fps;
 		int ticks = 0;
 		
+		double sec = System.currentTimeMillis();
+		
+		int waitingTime = 0;
+		
 		while(running){
-			now = System.nanoTime();
-			delta += (now - lastTime) / timePerTick;
-			timer += now - lastTime;
-			lastTime = now;
-			
-			if(delta >= 1){
-				tick();
-				render();
-				delta--;
-				ticks++;
-			}
-			
-			if(timer >= 1000000000){
+			double start = System.currentTimeMillis();
+			tick();
+			render();
+			ticks++;
+			if(System.currentTimeMillis() - sec >= 1000) {
 				System.out.println("FPS: " + ticks);
 				ticks = 0;
-				timer = 0;
+				sec = System.currentTimeMillis();
+			}
+			double delta = System.currentTimeMillis() - start;
+			waitingTime += (int) (timePerTick - delta);
+			if(waitingTime > 0) {
+				try {
+					Thread.sleep(waitingTime);
+					waitingTime = 0;
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+					running = false;
+				}
 			}
 		}
 		
