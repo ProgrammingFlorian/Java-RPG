@@ -7,6 +7,8 @@ import java.awt.Graphics;
 import florian.rpg.assets.Assets;
 import florian.rpg.config.CONF_Inventory;
 import florian.rpg.game.Handler;
+import florian.rpg.inventory.items.Item_Apple;
+import florian.rpg.inventory.items.Item_GoldenSword;
 
 public class Inventory {
 	
@@ -18,26 +20,27 @@ public class Inventory {
 	private int activeSlot = -1;
 	private boolean clickHold = false;
 	
-	public Inventory(Handler handler){
+	public Inventory(Handler handler) {
 		this.handler = handler;
 		
 		items = new Item[CONF_Inventory.SLOT_COUNT];
 		amounts = new int[CONF_Inventory.SLOT_COUNT];
 		for (int i = 0; i < items.length; i++) {
-			items[i] = new Item(0, "Item " + i, "test", Assets.getAttackIcon(0));
+			items[i] = new Item_GoldenSword();
 			amounts[i] = i;
 		}
-		items[5] = new Item(1, "Other Item", "test", Assets.getAttackIcon(1));
-		items[7] = new Item(1, "Other Item", "test", Assets.getAttackIcon(1));
-		items[10] = new Item(2, "Another Item", "test", Assets.getAttackIcon(2));
+		items[5] = new Item_Apple();
+		items[7] = new Item_Apple();
+		items[10] = new Item_Apple();
 	}
 	
-	public Item getItem(int slot){
+	public Item getItem(int slot) {
 		return items[slot];
 	}
 	
 	public void tick() {
 		drag();
+		checkForUse();
 	}
 	
 	public void renderItems(Graphics g) {
@@ -72,7 +75,7 @@ public class Inventory {
 	}
 	
 	public void renderBar(Graphics g) {
-		for(int i = 0; i < CONF_Inventory.HOT_SLOT_COUNT; i++){
+		for(int i = 0; i < CONF_Inventory.HOT_SLOT_COUNT; i++) {
 			g.drawImage(Assets.getUiSprite(0), HotbarPlacement.getX(i), HotbarPlacement.getY(), CONF_Inventory.HOT_SLOT_SIZE, CONF_Inventory.HOT_SLOT_SIZE, null);
 		}
 	}
@@ -127,6 +130,18 @@ public class Inventory {
 					}
 				}
 				activeSlot = -1;
+			}
+		}
+	}
+	
+	public void checkForUse() {
+		if(handler.getMouse().rightClicked()) {
+			int slot = SlotPlacement.getSlot(handler.getMouse().getMouseX(), handler.getMouse().getMouseY());
+			if(slot != -1 && items[slot] != null) {
+				items[slot].use(handler.getPlayer());
+				amounts[slot] -= 1;
+				if(amounts[slot] <= 0)
+					items[slot] = null;
 			}
 		}
 	}

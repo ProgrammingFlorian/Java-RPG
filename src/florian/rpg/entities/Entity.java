@@ -2,84 +2,69 @@ package florian.rpg.entities;
 
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
 import florian.rpg.battle.Attack;
 import florian.rpg.game.Handler;
-import florian.rpg.world.World;
+import florian.rpg.objects.CollidingObject;
+import florian.rpg.utils.Maths.Vector2;
 
-public abstract class Entity {
+public abstract class Entity extends CollidingObject {
 	
-	protected Handler handler;
-	
-	protected boolean alive = true;
 	protected int health, maxHealth;
 	protected int mana, maxMana;
-	protected int posX, posY;
-	protected float moveX, moveY;
-	protected int width, height;
-	protected BufferedImage image;
-	protected Rectangle bounds;
+	protected int shield = 0;
 	
 	protected Attack[] attacks;
 	protected boolean isFighting = false;
 	
-	public Entity(int health, int mana, int posX, int posY, int width, int height, BufferedImage image, Handler handler) {
-		this.handler = handler;
+	private int manaPerSecond;
+	private int manaCooldown = 0;
+	
+	public Entity(int health, int mana, int manaPerSecond, int width, int height, BufferedImage image, Handler handler) {
+		super(width, height, image, handler);
+		
+		this.health = health;
 		this.maxHealth = health;
+		this.mana = mana;
+		this.manaPerSecond = manaPerSecond;
+	}
+	
+	public Entity(int health, int mana, int manaPerSecond, Vector2 pos, int width, int height, BufferedImage image, Handler handler) {
+		super(pos, width, height, image, handler);
+		this.maxHealth = health;
+		this.manaPerSecond = manaPerSecond;
 		this.health = health;
 		this.maxMana = mana;
 		this.mana = mana;
-		this.posX = posX;
-		this.posY = posY;
-		this.width = width;
-		this.height = height;
-		this.image = image;
-		
-		this.bounds = new Rectangle(0, 0, width, height);
 	}
 	
-	public abstract void tick();
-	
-	public void render(Graphics g) {
-		if(image == null)
-			return;
-		
-		g.drawImage(image, (int) (this.posX - handler.getCamera().getxOffset()), (int) (this.posY - handler.getCamera().getyOffset()), width, height, null);
-		if(isFighting) {
-			g.setColor(Color.GRAY);
-			g.fillRect((int) (this.posX - handler.getCamera().getxOffset()), (int) (this.posY - handler.getCamera().getyOffset()), width, 10);
-			g.setColor(Color.RED);
-			g.fillRect((int) (this.posX - handler.getCamera().getxOffset()), (int) (this.posY - handler.getCamera().getyOffset()), (int) (width * (1f / ((float) maxHealth / (float) health))), 10);
+	@Override
+	public void tick(float delta) {
+		manaCooldown++;
+		if(manaCooldown % (this.handler.getGame().getFPS() / manaPerSecond) == 0) {
+			mana += manaPerSecond;
+			if(mana > maxMana)
+				mana = maxMana;
 		}
 		
-		/*g.setColor(Color.RED); --- Collision Box ---
-		g.fillRect((int) (posX + bounds.x - handler.getCamera().getxOffset()), (int) (posY + bounds.y - handler.getCamera().getyOffset()), bounds.width, bounds.height);*/
+		if(manaCooldown >= this.handler.getGame().getFPS())
+			manaCooldown -= this.handler.getGame().getFPS();
+		
+		for(Attack a : attacks)
+			a.tick(delta);
 	}
 	
-	public int getX() {
-		return this.posX;
-	}
-	
-	public int getMidX() {
-		return this.posX + (this.width/ 2);
-	}
-	
-	public int getY() {
-		return this.posY;
-	}
-	
-	public int getMidY() {
-		return this.posY + (this.height / 2);
-	}
-	
-	public int getWidth() {
-		return this.width;
-	}
-	
-	public int getHeight() {
-		return this.height;
+	@Override
+	public void render(Graphics g) {
+		super.render(g);
+		g.setColor(Color.GRAY);
+		g.fillRect((int) (this.pos.x - this.handler.getCamera().getxOffset()), (int) (this.pos.y - this.handler.getCamera().getyOffset()), this.width, 10);
+		g.setColor(Color.RED);
+		g.fillRect((int) (this.pos.x - this.handler.getCamera().getxOffset()), (int) (this.pos.y - this.handler.getCamera().getyOffset()), (int) (this.width * (1f / ((float) maxHealth / (float) health))), 10);
+		
+		/*g.setColor(Color.RED); //--- Collision Box ---
+		g.fillRect((int) (x + bounds.x - handler.getCamera().getxOffset()), (int) (y + bounds.y - handler.getCamera().getyOffset()), bounds.width, bounds.height);*/
 	}
 	
 	public Attack getAttack(int ID) {
@@ -93,12 +78,14 @@ public abstract class Entity {
 			return 0;
 	}
 	
-	public int getHealth(){
+	public int getHealth() {
 		return health;
 	}
 	
-	public boolean isAlive(){
-		return alive;
+	public void heal(int amount) {
+		health += amount;
+		if(health > maxHealth)
+			health = maxHealth;
 	}
 	
 	public boolean isFighting() {
@@ -108,57 +95,35 @@ public abstract class Entity {
 	public void setFighting(boolean isFighting) {
 		this.isFighting = isFighting;
 	}
-	
-	public void move() {
-		moveX();
-		moveY();
-	}
-	
-	public void moveX() {
-		if(moveX > 0) {
-			int tx = (int) (posX + moveX + bounds.x + bounds.width) / World.TILE_SIZE;
-			if(!collisionWithTile(tx, (int) (posY + bounds.y) / World.TILE_SIZE) && !collisionWithTile(tx, (int) (posY + bounds.y + bounds.height) / World.TILE_SIZE))
-				posX += moveX;
-			else
-				posX = tx * World.TILE_SIZE - bounds.x - bounds.width - 1;
-		}else if(moveX < 0) {
-			int tx = (int) (posX + moveX + bounds.x) / World.TILE_SIZE;
-			if(!collisionWithTile(tx, (int) (posY + bounds.y) / World.TILE_SIZE) && !collisionWithTile(tx, (int) (posY + bounds.y + bounds.height) / World.TILE_SIZE))
-				posX += moveX;
-			else
-				posX = tx * World.TILE_SIZE + World.TILE_SIZE - bounds.x;
+
+	public void attack(int damage) {
+		damage -= this.shield;
+		if(damage > 0) {
+			this.health -= damage;
+			if(this.health <= 0) {
+				this.die();
+			}
 		}
 	}
 	
-	public void moveY() {
-		if(moveY > 0) {
-			int ty = (int) (posY + moveY + bounds.y + bounds.height) / World.TILE_SIZE;
-			if(!collisionWithTile((int) (posX + bounds.x) / World.TILE_SIZE, ty) && !collisionWithTile((int) (posX + bounds.x + bounds.width) / World.TILE_SIZE, ty))
-				posY += moveY;
-			else
-				posY = ty * World.TILE_SIZE - bounds.y - bounds.height - 1;
-		}else if(moveY < 0) {
-			int ty = (int) (posY + moveY + bounds.y) / World.TILE_SIZE;
-			if(!collisionWithTile((int) (posX + bounds.x) / World.TILE_SIZE, ty) && !collisionWithTile((int) (posX + bounds.x + bounds.width) / World.TILE_SIZE, ty))
-				posY += moveY;
-			else
-				posY = ty * World.TILE_SIZE + World.TILE_SIZE - bounds.y;
-		}
-	}
-	
-	protected boolean collisionWithTile(int x, int y) {
-		return handler.getWorld().isSolid(x, y);
+	public int getShield() {
+		return shield;
 	}
 
-	public void attack(int damage){
-		this.health -= damage;
-		if(this.health <= 0){
-			this.die();
-		}
+	public void setShield(int shield) {
+		this.shield = shield;
 	}
 	
-	private void die(){
-		this.alive = false;
+	public int getManaLevel() {
+		return mana;
+	}
+	
+	public boolean costMana(int amount) {
+		if(mana > amount) {
+			mana -= amount;
+			return true;
+		} else
+			return false;
 	}
 
 }

@@ -10,21 +10,21 @@ public class KeyManager extends KeyAdapter {
 	public boolean aUp, aDown, aLeft, aRight;
 	public boolean p;
 	
-	public KeyManager(){
+	public KeyManager() {
 		keys = new boolean[256];
 		justPressed = new boolean[keys.length];
 		cantPress = new boolean[keys.length];
 	}
 	
-	public void tick(){
-		for(int i = 0; i < keys.length;i++){
-			if(cantPress[i] && !keys[i]){
+	public void tick() {
+		for(int i = 0; i < keys.length;i++) {
+			if(cantPress[i] && !keys[i]) {
 				cantPress[i] = false;
-			}else if(justPressed[i]){
+			}else if(justPressed[i]) {
 				cantPress[i] = true;
 				justPressed[i] = false;
 			}
-			if(!cantPress[i] && keys[i]){
+			if(!cantPress[i] && keys[i]) {
 				justPressed[i] = true;
 			}
 		}
@@ -42,7 +42,7 @@ public class KeyManager extends KeyAdapter {
 		p = keys[KeyEvent.VK_P];
 	}
 	
-	public boolean keyJustPressed(int keyCode){
+	public boolean keyJustPressed(int keyCode) {
 		if(keyCode < 0 || keyCode >= keys.length)
 			return false;
 		return justPressed[keyCode];

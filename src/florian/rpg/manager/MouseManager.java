@@ -4,6 +4,8 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 
+import florian.rpg.utils.Maths.Vector2;
+
 public class MouseManager implements MouseListener, MouseMotionListener {
 
 	private boolean leftPressed, rightPressed;
@@ -13,11 +15,11 @@ public class MouseManager implements MouseListener, MouseMotionListener {
 	
 	public MouseManager() { }
 	
-	public boolean leftPressed(){
+	public boolean leftPressed() {
 		return leftPressed;
 	}
 	
-	public boolean rightPressed(){
+	public boolean rightPressed() {
 		return rightPressed;
 	}
 	
@@ -29,12 +31,16 @@ public class MouseManager implements MouseListener, MouseMotionListener {
 		return rightJustClicked;
 	}
 	
-	public int getMouseX(){
+	public int getMouseX() {
 		return mouseX;
 	}
 	
-	public int getMouseY(){
+	public int getMouseY() {
 		return mouseY;
+	}
+	
+	public Vector2 getPos() {
+		return new Vector2(mouseX, mouseY);
 	}
 	
 	@Override

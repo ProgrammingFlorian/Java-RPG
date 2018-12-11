@@ -3,12 +3,13 @@ package florian.rpg.battle;
 import java.awt.Graphics;
 
 import florian.rpg.assets.Assets;
+import florian.rpg.entities.Entity;
 import florian.rpg.game.Handler;
 
 public class Claw extends Attack {
 
-	public Claw(Handler handler) {
-		super(handler);
+	public Claw(Handler handler, Entity me) {
+		super(handler, me);
 		this.damage = 20;
 		this.manaCost = 10;
 		this.name = "Claw";
@@ -16,7 +17,7 @@ public class Claw extends Attack {
 		this.icon = Assets.getAttackIcon(1);
 	}
 
-	public void render(Graphics g, int x1, int x2, int y1, int y2) {
+	public void render(Graphics g, int x1, int x2) {
 		
 	}
 

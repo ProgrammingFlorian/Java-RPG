@@ -31,16 +31,16 @@ public class Assets {
 			}
 		}
 		
-		for(int i = 0; i < 4; i++){
+		for(int i = 0; i < 4; i++) {
 			playerDown[i] = playerSpritesheet.getSubimage(i * 16, 0, 16, 16);
 		}
-		for(int i = 0; i < 4; i++){
+		for(int i = 0; i < 4; i++) {
 			playerUp[i] = playerSpritesheet.getSubimage(i * 16, 16, 16, 16);
 		}
-		for(int i = 0; i < 4; i++){
+		for(int i = 0; i < 4; i++) {
 			playerRight[i] = playerSpritesheet.getSubimage(i * 16, 32, 16, 16);
 		}
-		for(int i = 0; i < 4; i++){
+		for(int i = 0; i < 4; i++) {
 			playerLeft[i] = playerSpritesheet.getSubimage(i * 16, 48, 16, 16);
 		}
 		

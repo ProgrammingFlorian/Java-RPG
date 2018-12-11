@@ -22,7 +22,7 @@ public class Game implements Runnable {
 	private String title;
 	private int fps = 60;
 	
-	public Game(String title){
+	public Game(String title) {
 		this.title = title;
 	}
 	
@@ -42,7 +42,7 @@ public class Game implements Runnable {
 		State.setState(handler.getOpenWorldState());
 	}
 	
-	public void run(){
+	public void run() {
 		init();
 		
 		start();
@@ -54,9 +54,9 @@ public class Game implements Runnable {
 		
 		int waitingTime = 0;
 		
-		while(running){
+		while(running) {
 			double start = System.currentTimeMillis();
-			tick();
+			tick(1); //TODO: Calculate Delta
 			render();
 			ticks++;
 			if(System.currentTimeMillis() - sec >= 1000) {
@@ -65,7 +65,7 @@ public class Game implements Runnable {
 				sec = System.currentTimeMillis();
 			}
 			double delta = System.currentTimeMillis() - start;
-			waitingTime += (int) (timePerTick - delta);
+			waitingTime += timePerTick - delta;
 			if(waitingTime > 0) {
 				try {
 					Thread.sleep(waitingTime);
@@ -80,8 +80,8 @@ public class Game implements Runnable {
 		stop();
 	}
 	
-	private void tick() {
-		State.getState().tick();
+	private void tick(float delta) {
+		State.getState().tick(delta);
 		handler.getKeys().tick();
 		handler.getMouse().tick();
 	}
@@ -103,7 +103,7 @@ public class Game implements Runnable {
 		g.dispose();
 	}
 	
-	public synchronized void start(){
+	public synchronized void start() {
 		if(running)
 			return;
 		running = true;
@@ -111,7 +111,7 @@ public class Game implements Runnable {
 		thread.start();
 	}
 	
-	public synchronized void stop(){
+	public synchronized void stop() {
 		if(!running)
 			return;
 		running = false;

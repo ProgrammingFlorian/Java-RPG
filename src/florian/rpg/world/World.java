@@ -74,8 +74,8 @@ public class World {
 		int yEnd = (int) Math.min(height, (handler.getCamera().getyOffset() + handler.getDisplay().getHeight()) / TILE_SIZE + 1);
 		
 		for(int l = 0; l < this.layers; l++) {
-			for(int y = yStart; y < yEnd; y++){
-				for(int x = xStart; x < xEnd; x++){
+			for(int y = yStart; y < yEnd; y++) {
+				for(int x = xStart; x < xEnd; x++) {
 					if(tiles[l][y][x] != -1)
 						g.drawImage(Assets.getSprite(tiles[l][y][x]), (int) (x * TILE_SIZE - handler.getCamera().getxOffset()),(int) (y * TILE_SIZE - handler.getCamera().getyOffset()), TILE_SIZE, TILE_SIZE, null);
 					else if(l == 0) {

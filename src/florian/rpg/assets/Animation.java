@@ -8,23 +8,23 @@ public class Animation {
 	private int currentFrame;
 	private int fps, delta, count;
 	
-	public Animation(BufferedImage[] frames, int fps, int count){
+	public Animation(BufferedImage[] frames, int fps, int count) {
 		this.frames = frames;
 		this.fps = fps;
 		this.count = count;
 	}
 	
-	public BufferedImage getCurrentFrame(){
+	public BufferedImage getCurrentFrame() {
 		return frames[currentFrame];
 	}
 	
-	public BufferedImage getFrame(int ID){
+	public BufferedImage getFrame(int ID) {
 		return frames[ID];
 	}
 	
-	public void tick(){
+	public void tick() {
 		delta++;
-		if(delta >= fps / count){
+		if(delta >= fps / count) {
 			delta -= fps / count;
 			currentFrame++;
 			if(currentFrame >= frames.length)
@@ -32,7 +32,7 @@ public class Animation {
 		}
 	}
 	
-	public void reset(){
+	public void reset() {
 		currentFrame = 0;
 	}
 	

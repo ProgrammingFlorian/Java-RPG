@@ -8,13 +8,10 @@ import java.awt.image.BufferedImage;
 import florian.rpg.assets.Animation;
 import florian.rpg.assets.Assets;
 import florian.rpg.battle.Attack;
-import florian.rpg.battle.Battle;
 import florian.rpg.battle.Claw;
 import florian.rpg.battle.Pow;
-import florian.rpg.battle.Shield;
 import florian.rpg.game.Handler;
-import florian.rpg.states.BattleState;
-import florian.rpg.states.State;
+import florian.rpg.utils.Maths.Vector2;
 
 public class Player extends Entity {
 
@@ -24,22 +21,17 @@ public class Player extends Entity {
 	private BufferedImage imgIdle;
 	private boolean idle = true;
 	
-	private int manaPerSecond = 10;
-	private int delta;
-	private int shield = 0;
-	
-	public Player(int health, int mana, int posX, int posY, int speed, int width, int height, Handler handler) {
-		super(health, mana, posX, posY, width, height, null, handler);
+	public Player(int health, Vector2 pos, int speed, int width, int height, Handler handler) {
+		super(health, 200, 30, pos, width, height, null, handler);
 		this.speed = speed;
 		this.bounds = new Rectangle(12, 20, 39, 39);
 		
 		this.maxMana = 500;
 		this.mana = 200;
 		
-		this.attacks = new Attack[3];
-		this.attacks[0] = new Claw(handler);
-		this.attacks[1] = new Pow(handler);
-		this.attacks[2] = new Shield(handler);
+		this.attacks = new Attack[2];
+		this.attacks[0] = new Claw(handler, this);
+		this.attacks[1] = new Pow(handler, this);
 		
 		int fps = handler.getGame().getFPS();
 		animUp = new Animation(Assets.getPlayerUp(), fps, 10);
@@ -50,81 +42,62 @@ public class Player extends Entity {
 	}
 
 	@Override
-	public void tick() {
-		if(!isFighting){
+	public void tick(float delta) {
+		super.tick(delta);
+		if(!isFighting) {
 			updateMovement();
-			super.move();
-			checkForFight();
+			super.move(delta);
 			handler.getCamera().centerOnEntity(this);
 		}
-		delta++;
-		if(delta % (handler.getGame().getFPS() / manaPerSecond) == 0){
-			mana += manaPerSecond;
-			if(mana > maxMana)
-				mana = maxMana;
-		}
-		
-		if(delta >= handler.getGame().getFPS())
-			delta -= handler.getGame().getFPS();
 	}
 	
-	private void updateMovement(){
+	private void updateMovement() {
 		if(handler.getKeys().up) {
-			moveY = -speed;
-			if(idle){
+			direction.y = -speed;
+			if(idle) {
 				animUp.reset();
 				idle = false;
 			}else
 				animUp.tick();
 			this.image = animUp.getCurrentFrame();
-		}else if(handler.getKeys().down) {
-			moveY = speed;
-			if(idle){
+		} else if(handler.getKeys().down) {
+			direction.y = speed;
+			if(idle) {
 				animDown.reset();
 				idle = false;
 			}else
 				animDown.tick();
 			this.image = animDown.getCurrentFrame();
-		}else {
-			moveY = 0;
+		} else {
+			this.direction.y = 0;
 		}
 		if(handler.getKeys().right) {
-			this.moveX = speed;
-			if(idle){
+			this.direction.x = speed;
+			if(idle) {
 				animRight.reset();
 				idle = false;
 			}else
 				animRight.tick();
 			this.image = animRight.getCurrentFrame();
-		}else if(handler.getKeys().left) {
-			this.moveX = -speed;
-			if(idle){
+		} else if(handler.getKeys().left) {
+			this.direction.x = -speed;
+			if(idle) {
 				animLeft.reset();
 				idle = false;
 			}else
 				animLeft.tick();
 			this.image = animLeft.getCurrentFrame();
-		}else {
-			moveX = 0;
+		} else {
+			this.direction.x = 0;
 		}
-		if(moveX == 0 && moveY == 0){
+		if(this.direction.x == 0 && this.direction.y == 0) {
 			this.image = imgIdle;
 			idle = true;
 		}
-	}
-	
-	private void checkForFight(){
-		for(Entity e : handler.getOpenWorldState().getEntities()){
-			if(Math.abs(e.getX() - this.posX) < 120 && Math.abs(e.getY() - this.posY) < 120){
-				this.setFighting(true);
-				e.setFighting(true);
-				State.setState(new BattleState(new Battle(this, e, handler), handler));
-			}
-		}
-	}
+	} 
 	
 	@Override
-	public void render(Graphics g){
+	public void render(Graphics g) {
 		super.render(g);
 		//Health
 		g.setColor(Color.GRAY);
@@ -140,33 +113,6 @@ public class Player extends Entity {
 		g.fillRect(10, 30, (int) (200 * (1f / ((float) maxMana / (float) mana))), 20);
 		g.setColor(Color.BLACK);
 		g.drawString("Mana: " + mana, 15, 45);
-	}
-	
-	public int getManaLevel(){
-		return mana;
-	}
-	
-	public boolean costMana(int amount){
-		if(mana > amount){
-			mana -= amount;
-			return true;
-		}else
-			return false;
-	}
-
-	public int getShield() {
-		return shield;
-	}
-
-	public void setShield(int shield) {
-		this.shield = shield;
-	}
-	
-	@Override
-	public void attack(int damage){
-		damage -= shield;
-		if(damage > 0)
-			super.attack(damage);
 	}
 	
 }

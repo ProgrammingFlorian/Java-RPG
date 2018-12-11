@@ -15,7 +15,7 @@ public class Display {
 	private int width, height;
 	private String title;
 	
-	public Display(int width, int height, String title){
+	public Display(int width, int height, String title) {
 		this.title = title;
 		this.width = width;
 		this.height = height;
@@ -23,7 +23,7 @@ public class Display {
 		create();
 	}
 	
-	private void create(){
+	private void create() {
 		try {
 			UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
 		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException e) {
@@ -47,7 +47,7 @@ public class Display {
 		frame.setVisible(true);
 	}
 	
-	public Canvas getCanvas(){
+	public Canvas getCanvas() {
 		return canvas;
 	}
 	

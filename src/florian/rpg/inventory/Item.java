@@ -2,7 +2,9 @@ package florian.rpg.inventory;
 
 import java.awt.image.BufferedImage;
 
-public class Item {
+import florian.rpg.entities.Player;
+
+public abstract class Item {
 
 	private int ID;
 	private String name;
@@ -31,5 +33,7 @@ public class Item {
 	public BufferedImage getIcon() {
 		return icon;
 	}
+	
+	public abstract void use(Player p);
 	
 }
